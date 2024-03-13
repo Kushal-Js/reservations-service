@@ -23,7 +23,6 @@ export class ReservationsController {
     @Body() createReservationDto: CreateReservationDto,
     @CurrentUser() user: UserDto,
   ) {
-    console.log('-------reservation------', createReservationDto, user);
     return this.reservationsService.create(createReservationDto, user);
   }
 
@@ -53,5 +52,10 @@ export class ReservationsController {
   @Roles('Admin')
   async remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
+  }
+
+  @Get('hello')
+  async getHello() {
+    return 'Hello from reservations service';
   }
 }
