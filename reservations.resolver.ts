@@ -15,7 +15,7 @@ export class ReservationResolver {
     createReservationInput: CreateReservationDto,
     @CurrentUser() user: UserDto,
   ) {
-    return this.reservationsService.create(createReservationInput, user);
+    return this.reservationsService.create(createReservationInput);
   }
 
   @Query(() => [ReservationDocument], { name: 'reservations' })

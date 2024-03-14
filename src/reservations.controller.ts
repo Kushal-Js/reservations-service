@@ -17,13 +17,13 @@ import { CurrentUser, JwtAuthGuard, Roles, UserDto } from '@app/common';
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() createReservationDto: CreateReservationDto,
     @CurrentUser() user: UserDto,
   ) {
-    return this.reservationsService.create(createReservationDto, user);
+    return this.reservationsService.create(createReservationDto);
   }
 
   @Get()

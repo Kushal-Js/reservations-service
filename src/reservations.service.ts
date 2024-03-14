@@ -13,10 +13,8 @@ export class ReservationsService {
     @Inject(HOTELS_SERVICE) private readonly hotelsService: ClientProxy,
   ) {}
 
-  async create(
-    createReservationDto: CreateReservationDto,
-    { _id: userId }: UserDto,
-  ) {
+  async create(createReservationDto: CreateReservationDto) {
+    const userId = 'test';
     const hotelId = createReservationDto.hotelId;
     return this.hotelsService
       .send('book_hotel', {
