@@ -42,6 +42,7 @@ export class ReservationsService {
   // }
 
   async create(createReservationDto: CreateReservationDto, req) {
+    console.log('-------user data from auth-------', req?.userId);
     const userId = req?.userId;
     const hotelId = createReservationDto.hotelId;
     return this.hotelsService

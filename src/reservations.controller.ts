@@ -24,7 +24,6 @@ export class ReservationsController {
     @Body() createReservationDto: CreateReservationDto,
     @Request() req: Request,
   ) {
-    console.log('-------user data from auth-------', req);
     return this.reservationsService.create(createReservationDto, req);
   }
 
