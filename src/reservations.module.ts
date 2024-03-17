@@ -22,6 +22,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { ReservationResolver } from '../reservations.resolver';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,6 +30,15 @@ import { ReservationResolver } from '../reservations.resolver';
     DatabaseModule.forFeature([
       { name: ReservationDocument.name, schema: ReservationSchema },
     ]),
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configService.get('JWT_EXPIRATION')}s`,
+        },
+      }),
+      inject: [ConfigService],
+    }),
     LoggerModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
@@ -39,7 +49,8 @@ import { ReservationResolver } from '../reservations.resolver';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        MONGODB_URI: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        MONGODB_ATLAS_URI: Joi.string().required(),
         PORT: Joi.number().required(),
         AUTH_HOST: Joi.string().required(),
         AUTH_TCP_PORT: Joi.number().required(),

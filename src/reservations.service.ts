@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { HOTELS_SERVICE, UserDto } from '@app/common';
+import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
+import { AUTH_SERVICE, HOTELS_SERVICE, UserDto } from '@app/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
@@ -11,10 +11,37 @@ export class ReservationsService {
   constructor(
     private readonly reservationsRepository: ReservationsRepository,
     @Inject(HOTELS_SERVICE) private readonly hotelsService: ClientProxy,
+    @Inject(AUTH_SERVICE) private readonly authService: ClientProxy,
   ) {}
+  context: ExecutionContext;
+
+  // async create(createReservationDto: CreateReservationDto, req) {
+  //   const userId = 'test';
+  //   const hotelId = createReservationDto.hotelId;
+  //   const jwt = req?.cookies?.Authentication || req?.headers?.authentication;
+
+  //   console.log('----------Auth Guard--------', jwt, hotelId);
+  //   const answer = this.authService.send('validateToken', {
+  //     Authentication: jwt,
+  //   });
+  //   console.log('-------answer--------', answer);
+  //   return this.authService
+  //     .send('validateToken', {
+  //       Authentication: jwt,
+  //     })
+  //     .pipe(
+  //       map((res) => {
+  //         return this.reservationsRepository.create({
+  //           ...createReservationDto,
+  //           reservationId: res.reservationId || userId,
+  //           timestamp: new Date(),
+  //           userId: res.userId || userId,
+  //         });
+  //       }),
+  //     );
+  // }
 
   async create(createReservationDto: CreateReservationDto) {
-    const userId = 'test';
     const hotelId = createReservationDto.hotelId;
     return this.hotelsService
       .send('book_hotel', {
@@ -26,7 +53,7 @@ export class ReservationsService {
             ...createReservationDto,
             reservationId: res.reservationId,
             timestamp: new Date(),
-            userId,
+            userId: res.userId,
           });
         }),
       );

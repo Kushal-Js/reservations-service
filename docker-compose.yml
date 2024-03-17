@@ -1,8 +1,8 @@
 version: '3.3'
 services:
-  mongodb:
+  mongodb-reservations:
     image : mongo
-    container_name: mongodb
+    container_name: mongodb-reservations
     volumes:
       - ./database:/data/db
     ports:
@@ -24,7 +24,7 @@ services:
     networks:
       - nesjs-network
     depends_on:
-      - mongodb
+      - mongodb-reservations
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
