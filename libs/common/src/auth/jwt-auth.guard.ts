@@ -38,6 +38,7 @@ export class JwtAuthGuard implements CanActivate {
           if (userId == null || userId == '') {
             throw new UnauthorizedException();
           }
+          request.userId = userId;
           return true;
         }),
         map(() => true),

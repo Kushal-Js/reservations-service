@@ -3,6 +3,7 @@ import { ReservationDocument } from './src/models/reservation.schema';
 import { ReservationsService } from './src/reservations.service';
 import { CreateReservationDto } from './src/dto/create-reservation.dto';
 import { Query } from '@nestjs/graphql';
+import { Request } from '@nestjs/common';
 
 @Resolver(() => ReservationDocument)
 export class ReservationResolver {
@@ -12,8 +13,9 @@ export class ReservationResolver {
   createReservation(
     @Args('createReservationInput')
     createReservationInput: CreateReservationDto,
+    @Request() req: Request,
   ) {
-    return this.reservationsService.create(createReservationInput);
+    return this.reservationsService.create(createReservationInput, req);
   }
 
   @Query(() => [ReservationDocument], { name: 'reservations' })

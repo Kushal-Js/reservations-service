@@ -1,5 +1,5 @@
 import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
-import { AUTH_SERVICE, HOTELS_SERVICE, UserDto } from '@app/common';
+import { AUTH_SERVICE, HOTELS_SERVICE } from '@app/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
@@ -41,7 +41,8 @@ export class ReservationsService {
   //     );
   // }
 
-  async create(createReservationDto: CreateReservationDto) {
+  async create(createReservationDto: CreateReservationDto, req) {
+    const userId = req?.userId;
     const hotelId = createReservationDto.hotelId;
     return this.hotelsService
       .send('book_hotel', {
@@ -53,7 +54,7 @@ export class ReservationsService {
             ...createReservationDto,
             reservationId: res.reservationId,
             timestamp: new Date(),
-            userId: res.userId,
+            userId,
           });
         }),
       );
