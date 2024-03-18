@@ -16,30 +16,6 @@ export class ReservationsService {
   ) {}
   context: ExecutionContext;
 
-  // async create(createReservationDto: CreateReservationDto, req) {
-  //   const userId = 'test';
-  //   const hotelId = createReservationDto.hotelId;
-  //   const jwt = req?.cookies?.Authentication || req?.headers?.authentication;
-
-  //   const answer = this.authService.send('validateToken', {
-  //     Authentication: jwt,
-  //   });
-  //   return this.authService
-  //     .send('validateToken', {
-  //       Authentication: jwt,
-  //     })
-  //     .pipe(
-  //       map((res) => {
-  //         return this.reservationsRepository.create({
-  //           ...createReservationDto,
-  //           reservationId: res.reservationId || userId,
-  //           timestamp: new Date(),
-  //           userId: res.userId || userId,
-  //         });
-  //       }),
-  //     );
-  // }
-
   async create(createReservationDto: CreateReservationDto, req) {
     const userId = req?.userId;
     const hotelId = createReservationDto.hotelId;
