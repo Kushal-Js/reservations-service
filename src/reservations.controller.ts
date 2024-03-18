@@ -39,11 +39,11 @@ export class ReservationsController {
         throw new HttpException(
           {
             status: HttpStatus.FORBIDDEN,
-            error: 'Hotel is already booked',
+            error: 'Hotel is already booked, choose another data',
           },
           HttpStatus.FORBIDDEN,
           {
-            cause: 'Hotel is already booked',
+            cause: 'Hotel is already booked, choose another data',
           },
         );
       }
