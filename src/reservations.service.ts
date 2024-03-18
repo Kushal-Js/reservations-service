@@ -2,6 +2,7 @@ import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { AUTH_SERVICE, HOTELS_SERVICE } from '@app/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { GetReservationDto } from './dto/get-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs';
@@ -20,11 +21,9 @@ export class ReservationsService {
   //   const hotelId = createReservationDto.hotelId;
   //   const jwt = req?.cookies?.Authentication || req?.headers?.authentication;
 
-  //   console.log('----------Auth Guard--------', jwt, hotelId);
   //   const answer = this.authService.send('validateToken', {
   //     Authentication: jwt,
   //   });
-  //   console.log('-------answer--------', answer);
   //   return this.authService
   //     .send('validateToken', {
   //       Authentication: jwt,
@@ -42,9 +41,9 @@ export class ReservationsService {
   // }
 
   async create(createReservationDto: CreateReservationDto, req) {
-    console.log('-------user data from auth-------', req?.userId);
     const userId = req?.userId;
     const hotelId = createReservationDto.hotelId;
+
     return this.hotelsService
       .send('book_hotel', {
         hotelId,
@@ -55,14 +54,29 @@ export class ReservationsService {
             ...createReservationDto,
             reservationId: res.reservationId,
             timestamp: new Date(),
+            hotelId,
             userId,
           });
         }),
       );
   }
 
+  async checkExistingReservation(hotelId: string, createReservationDto) {
+    return await this.find({ hotelId }).then((data: any) => {
+      if (data.length > 0) {
+        return createReservationDto.endDate <= data[0]?.startDate;
+      } else {
+        return true;
+      }
+    });
+  }
+
   async findAll() {
     return this.reservationsRepository.find({});
+  }
+
+  async find(getReservationDto: GetReservationDto) {
+    return this.reservationsRepository.find(getReservationDto);
   }
 
   async findOne(_id: string) {

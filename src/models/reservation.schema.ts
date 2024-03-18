@@ -23,6 +23,10 @@ export class ReservationDocument extends AbstractDocument {
 
   @Prop()
   @Field()
+  hotelId: string;
+
+  @Prop()
+  @Field()
   reservationId: string;
 }
 

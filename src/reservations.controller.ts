@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -24,7 +26,28 @@ export class ReservationsController {
     @Body() createReservationDto: CreateReservationDto,
     @Request() req: Request,
   ) {
-    return this.reservationsService.create(createReservationDto, req);
+    const hotelId = createReservationDto.hotelId;
+    const isReservationAvailable =
+      this.reservationsService.checkExistingReservation(
+        hotelId,
+        createReservationDto,
+      );
+    return isReservationAvailable.then((data) => {
+      if (data) {
+        return this.reservationsService.create(createReservationDto, req);
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            error: 'Hotel is already booked',
+          },
+          HttpStatus.FORBIDDEN,
+          {
+            cause: 'Hotel is already booked',
+          },
+        );
+      }
+    });
   }
 
   @Get()
