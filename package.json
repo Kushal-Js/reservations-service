@@ -4,7 +4,8 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",  "scripts": {
+  "license": "UNLICENSED",
+  "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -24,6 +25,7 @@
     "@apollo/server": "^4.10.1",
     "@apollo/subgraph": "^2.7.1",
     "@nestjs/apollo": "^12.1.0",
+    "@nestjs/cli": "^10.1.18",
     "@nestjs/common": "^10.2.7",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.2.7",
@@ -34,6 +36,7 @@
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.2.7",
+    "@nestjs/typeorm": "^10.0.2",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -52,8 +55,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.1",
-    "uuid": "^9.0.1",
-    "@nestjs/cli": "^10.1.18"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/schematics": "^10.0.2",
@@ -85,6 +87,7 @@
       "ts"
     ],
     "rootDir": ".",
+    "verbose": true,
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -96,7 +99,8 @@
     "testEnvironment": "node",
     "roots": [
       "<rootDir>/libs/",
-      "<rootDir>/apps/"
+      "<rootDir>/src/",
+      "<rootDir>/test/"
     ],
     "moduleNameMapper": {
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
